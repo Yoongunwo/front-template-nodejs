@@ -47,6 +47,15 @@ const fetchRefresh = async () => {
     method: 'POST',
     credentials: 'include',
   });
+
+  if (response.status === 401 || response.status === 422) {
+    const retryResponse = await fetch(url, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    return retryResponse;
+  }
   return response;
 };
 

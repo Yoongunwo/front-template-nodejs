@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-} from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -36,7 +30,7 @@ const AuthProvider = ({ children }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>

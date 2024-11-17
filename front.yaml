@@ -1,0 +1,46 @@
+# configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  REACT_APP_API_URL: 'http://fastapi-backend.default.svc.cluster.local:8000'
+  REACT_APP_API_PREFIX: '/api'
+---
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-frontend
+  template:
+    metadata:
+      labels:
+        app: react-frontend
+    spec:
+      containers:
+        - name: react-frontend
+          image: yoongunwo/front-template-nodejs:1.0
+          ports:
+            - containerPort: 80
+          # envFrom:
+          #   - configMapRef:
+          #       name: frontend-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-frontend
+spec:
+  selector:
+    app: react-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
